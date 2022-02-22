@@ -1,14 +1,17 @@
 <template>
-  <h1>慕课乐高标准模版</h1>
-  <a-button type="primary">Primary Button</a-button>
-  <ul>
-    <li>开箱即用</li>
-    <li>typescript</li>
-    <li>Vue3</li>
-    <li>支持 tsx</li>
-    <li>eslint</li>
-    <li>简单易用可扩展</li>
-  </ul>
+  <a-layout :style="{ background: '#fff' }">
+    <a-layout-header class="header">
+      <div class="page-title">
+        <router-link to="/">慕课乐高</router-link>
+      </div>
+    </a-layout-header>
+    <a-layout-content class="home-layout">
+      <router-view></router-view>
+    </a-layout-content>
+    <a-layout-footer>
+      © 慕课网（imooc.com）版权所有 | 津ICP备20000929号-2
+    </a-layout-footer>
+  </a-layout>
 </template>
 
 <script lang="ts">
@@ -20,12 +23,12 @@ export default defineComponent({
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-title {
+  color: #fff;
 }
 </style>
