@@ -4,6 +4,7 @@
       <div class="page-title">
         <router-link to="/">慕课乐高</router-link>
       </div>
+      <user-profile :user="user"></user-profile>
     </a-layout-header>
     <a-layout-content class="home-layout">
       <router-view></router-view>
@@ -15,10 +16,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
-  name: 'App'
+  name: 'App',
+  setup() {
+    const store = useStore()
+    const user = computed(() => store.state.user)
+
+    return {
+      user
+    }
+  }
 })
 </script>
 

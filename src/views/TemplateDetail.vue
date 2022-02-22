@@ -29,32 +29,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { GlobalDataProps } from '@/store'
+import { TemplateProps } from '@/store/templates'
+import { computed, defineComponent } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'TemplateDetail',
   setup() {
-    const template = reactive({
-      _id: '61a739f38d5263ce811e7065',
-      id: 19,
-      uuid: 'kWHu5n',
-      title: '1024 程序员日',
-      desc: '1024 程序员日',
-      author: '185****2625',
-      coverImg: 'http://static-dev.imooc-lego.com/imooc-test/sZHlgv.png',
-      isTemplate: true,
-      status: 2,
-      copiedCount: 866,
-      latestPublishAt: '2021-12-02T02:27:46.730Z',
-      isHot: true,
-      isPublic: true,
-      createdAt: '2020-11-26T09:27:19.000Z',
-      updatedAt: '2022-02-22T09:21:41.307Z',
-      user: '617d33bed38dbc5025755a8b',
-
-      channels: [{ name: '默认', id: 'qOZbBt' }],
-      __v: 0
-    })
+    const store = useStore<GlobalDataProps>()
+    const route = useRoute()
+    const currentId = route.params.id as string
+    const template = computed<TemplateProps>(() =>
+      store.getters.getTemplateById(parseInt(currentId))
+    )
     return {
       template
     }
