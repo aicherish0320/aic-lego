@@ -14,6 +14,8 @@ export interface ComponentData {
 export interface EditorProps {
   // 供中间编辑器渲染的数组
   components: ComponentData[]
+  // 当前编辑的是哪个元素，uuid
+  currentElement: string
 }
 
 export const testComponents: ComponentData[] = [
@@ -41,7 +43,20 @@ export const testComponents: ComponentData[] = [
 
 const editor: Module<EditorProps, GlobalDataProps> = {
   state: {
-    components: testComponents
+    components: testComponents,
+    currentElement: ''
+  },
+  mutations: {
+    setActive(state, currentId: string) {
+      state.currentElement = currentId
+    }
+  },
+  getters: {
+    getCurrentElement: (state) => {
+      return state.components.find(
+        (component) => component.id === state.currentElement
+      )
+    }
   }
 }
 

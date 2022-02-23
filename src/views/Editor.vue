@@ -20,13 +20,19 @@
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content class="preview-container">
           <p>画布区域</p>
-          <div class="preview-list" id="canvas-area">
-            <component
+          <div>
+            <EditorWrapper
               v-for="component in components"
               :key="component.id"
-              :is="component.name"
-              v-bind="component.props"
-            ></component>
+              :id="component.id"
+              :active="component.id === (currentElement && currentElement.id)"
+              @set-active="setActive"
+            >
+              <component
+                :is="component.name"
+                v-bind="component.props"
+              ></component>
+            </EditorWrapper>
           </div>
         </a-layout-content>
       </a-layout>
@@ -36,6 +42,7 @@
         class="settings-panel"
       >
         组件属性
+        <pre>{{ currentElement?.props }}</pre>
       </a-layout-sider>
     </a-layout>
   </div>
@@ -46,17 +53,29 @@ import { GlobalDataProps } from '@/store'
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import LText from '@/components/LText.vue'
+import EditorWrapper from '@/components/EditorWrapper.vue'
+import { ComponentData } from '@/store/editor'
 
 export default defineComponent({
   name: 'Editor',
   components: {
-    LText
+    LText,
+    EditorWrapper
   },
   setup() {
     const store = useStore<GlobalDataProps>()
     const components = computed(() => store.state.editor.components)
+    const currentElement = computed<ComponentData | null>(
+      () => store.getters.getCurrentElement
+    )
+    const setActive = (id: string) => {
+      store.commit('setActive', id)
+    }
+
     return {
-      components
+      components,
+      setActive,
+      currentElement
     }
   }
 })
