@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 import { GlobalDataProps } from '.'
 import { v4 as uuidv4 } from 'uuid'
+import { TextComponentProps } from '@/defaultProps'
 
 export interface ComponentData {
   // 这个元素的 属性，属性请详见下面
@@ -47,6 +48,14 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     currentElement: ''
   },
   mutations: {
+    addComponent(state, props: Partial<TextComponentProps>) {
+      const newComponent: ComponentData = {
+        id: uuidv4(),
+        name: 'l-text',
+        props
+      }
+      state.components.push(newComponent)
+    },
     setActive(state, currentId: string) {
       state.currentElement = currentId
     }

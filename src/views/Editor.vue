@@ -15,7 +15,13 @@
     </a-layout>
     <a-layout>
       <a-layout-sider width="300" style="background: #0f0">
-        <div class="sidebar-container">组件列表</div>
+        <div class="sidebar-container">
+          组件列表
+          <ComponentList
+            :list="defaultTextTemplates"
+            @on-item-click="addItem"
+          ></ComponentList>
+        </div>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content class="preview-container">
@@ -55,12 +61,15 @@ import { useStore } from 'vuex'
 import LText from '@/components/LText.vue'
 import EditorWrapper from '@/components/EditorWrapper.vue'
 import { ComponentData } from '@/store/editor'
+import ComponentList from '@/components/ComponentList.vue'
+import { defaultTextTemplates } from '@/defaultProps'
 
 export default defineComponent({
   name: 'Editor',
   components: {
     LText,
-    EditorWrapper
+    EditorWrapper,
+    ComponentList
   },
   setup() {
     const store = useStore<GlobalDataProps>()
@@ -68,14 +77,19 @@ export default defineComponent({
     const currentElement = computed<ComponentData | null>(
       () => store.getters.getCurrentElement
     )
+    const addItem = (props: any) => {
+      store.commit('addComponent', props)
+    }
     const setActive = (id: string) => {
       store.commit('setActive', id)
     }
 
     return {
       components,
+      addItem,
       setActive,
-      currentElement
+      currentElement,
+      defaultTextTemplates
     }
   }
 })
