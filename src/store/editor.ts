@@ -23,16 +23,24 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: 'l-text',
-    props: { text: 'hello1', fontSize: '20px', color: 'red', lineHeight: '1' }
+    props: {
+      text: 'hello1',
+      fontSize: '40px',
+      lineHeight: '1',
+      textAlign: 'center',
+      fontFamily: '"SimHei","STHeiti"'
+    }
   },
   {
     id: uuidv4(),
     name: 'l-text',
     props: {
       text: 'hello2',
-      fontSize: '30px',
+      fontSize: '40px',
       fontWeight: 'bold',
-      lineHeight: '2'
+      lineHeight: '2',
+      textAlign: 'right',
+      fontFamily: '"KaiTi","STKaiti"'
     }
   },
   {
@@ -40,7 +48,7 @@ export const testComponents: ComponentData[] = [
     name: 'l-text',
     props: {
       text: 'hello',
-      fontSize: '50px'
+      fontSize: '40px'
     }
   }
 ]

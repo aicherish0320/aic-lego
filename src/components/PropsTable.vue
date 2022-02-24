@@ -7,7 +7,17 @@
           :is="value.component"
           :value="value.value"
           v-bind="value.extraProps"
-        ></component>
+        >
+          <template v-if="value.options">
+            <component
+              :is="value.subComponent"
+              v-for="(option, k) in value.options"
+              :key="k"
+              :value="option.value"
+              >{{ option.text }}</component
+            >
+          </template>
+        </component>
       </template>
     </div>
   </div>
@@ -35,7 +45,9 @@ export default defineComponent({
           const newKey = key as keyof TextComponentProps
           const item = mapPropsToForm[newKey]
           if (item) {
-            item.value = value
+            item.value = item.initialTransform
+              ? item.initialTransform(value)
+              : value
             result[newKey] = item
           }
           return result
