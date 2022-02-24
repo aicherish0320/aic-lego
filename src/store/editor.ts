@@ -23,21 +23,24 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: 'l-text',
-    props: { text: 'hello', fontSize: '20px' }
+    props: { text: 'hello1', fontSize: '20px', color: 'red', lineHeight: '1' }
   },
   {
     id: uuidv4(),
     name: 'l-text',
-    props: { text: 'hello', fontSize: '30px', color: 'red' }
+    props: {
+      text: 'hello2',
+      fontSize: '30px',
+      fontWeight: 'bold',
+      lineHeight: '2'
+    }
   },
   {
     id: uuidv4(),
     name: 'l-text',
     props: {
       text: 'hello',
-      fontSize: '50px',
-      actionType: 'url',
-      url: 'https://www.baidu.com'
+      fontSize: '50px'
     }
   }
 ]

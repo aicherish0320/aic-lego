@@ -80,8 +80,17 @@ export const textDefaultProps: TextComponentProps = {
   ...commonDefaultProps
 }
 
-export const transformToComponentProps = (props: TextComponentProps) =>
-  mapValues(props, (item) => ({ type: item.constructor, default: item }))
+// export const transformToComponentProps = (props: TextComponentProps) =>
+//   mapValues(props, (item) => ({ type: item.constructor, default: item }))
+
+export const transformToComponentProps = <T extends {}>(props: T) => {
+  return mapValues(props, (item) => {
+    return {
+      type: (item as any).constructor as StringConstructor,
+      default: item
+    }
+  })
+}
 
 export const textStylePropNames = without(
   Object.keys(textDefaultProps),
@@ -92,7 +101,7 @@ export const textStylePropNames = without(
 
 export const defaultTextTemplates = [
   {
-    text: '大标题',
+    text: '大标题1',
     fontSize: '30px',
     fontWeight: 'bold',
     tag: 'h2'

@@ -12,7 +12,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { TextComponentProps } from '@/defaultProps'
+import { defineComponent, PropType } from 'vue'
 import LText from './LText.vue'
 export default defineComponent({
   name: 'ComponentList',
@@ -21,7 +22,7 @@ export default defineComponent({
   },
   props: {
     list: {
-      type: Array,
+      type: Array as PropType<TextComponentProps[]>,
       required: true
     }
   },

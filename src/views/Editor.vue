@@ -44,10 +44,14 @@
       </a-layout>
       <a-layout-sider
         width="300"
-        style="background: #f00"
+        style="background: #ccc"
         class="settings-panel"
       >
         组件属性
+        <PropsTable
+          v-if="currentElement && currentElement.props"
+          :props="currentElement.props"
+        ></PropsTable>
         <pre>{{ currentElement?.props }}</pre>
       </a-layout-sider>
     </a-layout>
@@ -63,13 +67,15 @@ import EditorWrapper from '@/components/EditorWrapper.vue'
 import { ComponentData } from '@/store/editor'
 import ComponentList from '@/components/ComponentList.vue'
 import { defaultTextTemplates } from '@/defaultProps'
+import PropsTable from '@/components/PropsTable.vue'
 
 export default defineComponent({
   name: 'Editor',
   components: {
     LText,
     EditorWrapper,
-    ComponentList
+    ComponentList,
+    PropsTable
   },
   setup() {
     const store = useStore<GlobalDataProps>()
