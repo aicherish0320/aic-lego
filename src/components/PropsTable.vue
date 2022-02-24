@@ -5,8 +5,9 @@
         <span class="label">{{ value.text }}</span>
         <component
           :is="value.component"
-          :value="value.value"
+          :[value.valueProp]="value.value"
           v-bind="value.extraProps"
+          v-on="value.events"
         >
           <template v-if="value.options">
             <component
@@ -26,8 +27,21 @@
 <script lang="ts">
 import { TextComponentProps } from '@/defaultProps'
 import { mapPropsToForm, PropsToForms } from '@/propsMap'
+import { context } from 'ant-design-vue/lib/vc-image/src/PreviewGroup'
 import { reduce } from 'lodash'
 import { computed, defineComponent, PropType } from 'vue'
+
+interface FormProps {
+  component: string
+  subComponent?: string
+  value: string
+  extraProps?: { [key: string]: any }
+  text?: string
+  options?: { text: string; value: any }[]
+  valueProp: string
+  eventName: string
+  events: { [key: string]: (e: any) => void }
+}
 
 export default defineComponent({
   name: 'PropsTable',
@@ -37,7 +51,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['change'],
+  setup(props, context) {
     const finalProps = computed(() => {
       return reduce(
         props.props,
@@ -45,14 +60,28 @@ export default defineComponent({
           const newKey = key as keyof TextComponentProps
           const item = mapPropsToForm[newKey]
           if (item) {
-            item.value = item.initialTransform
-              ? item.initialTransform(value)
-              : value
-            result[newKey] = item
+            const {
+              valueProp = 'value',
+              eventName = 'change',
+              initialTransform
+            } = item
+            const newItem: FormProps = {
+              ...item,
+              value: initialTransform ? initialTransform(value) : value,
+              valueProp,
+              eventName,
+              events: {
+                [eventName]: (e: any) => {
+                  context.emit('change', { key, value: e })
+                }
+              }
+            }
+
+            result[newKey] = newItem
           }
           return result
         },
-        {} as PropsToForms
+        {} as { [key: string]: FormProps }
       )
     })
     return {
