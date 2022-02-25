@@ -26,10 +26,10 @@
 
 <script lang="ts">
 import { TextComponentProps } from '@/defaultProps'
-import { mapPropsToForm, PropsToForms } from '@/propsMap'
+import { mapPropsToForms, PropsToForms } from '../propsMap'
 import { context } from 'ant-design-vue/lib/vc-image/src/PreviewGroup'
 import { reduce } from 'lodash'
-import { computed, defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, VNode } from 'vue'
 
 interface FormProps {
   component: string
@@ -37,7 +37,7 @@ interface FormProps {
   value: string
   extraProps?: { [key: string]: any }
   text?: string
-  options?: { text: string; value: any }[]
+  options?: { text: string | VNode; value: any }[]
   valueProp: string
   eventName: string
   events: { [key: string]: (e: any) => void }
@@ -58,7 +58,7 @@ export default defineComponent({
         props.props,
         (result, value, key) => {
           const newKey = key as keyof TextComponentProps
-          const item = mapPropsToForm[newKey]
+          const item = mapPropsToForms[newKey]
           if (item) {
             const {
               valueProp = 'value',

@@ -14,7 +14,7 @@
       </a-layout-header>
     </a-layout>
     <a-layout>
-      <a-layout-sider width="300" style="background: #0f0">
+      <a-layout-sider width="300" style="background: #eee">
         <div class="sidebar-container">
           组件列表
           <ComponentList
@@ -68,7 +68,7 @@ import EditorWrapper from '@/components/EditorWrapper.vue'
 import { ComponentData } from '@/store/editor'
 import ComponentList from '@/components/ComponentList.vue'
 import { defaultTextTemplates } from '@/defaultProps'
-import PropsTable from '@/components/PropsTable.vue'
+import PropsTable from '@/components/PropsTable'
 
 export default defineComponent({
   name: 'Editor',
