@@ -68,7 +68,7 @@ import EditorWrapper from '@/components/EditorWrapper.vue'
 import { ComponentData } from '@/store/editor'
 import ComponentList from '@/components/ComponentList.vue'
 import { defaultTextTemplates } from '@/defaultProps'
-import PropsTable from '@/components/PropsTable'
+import PropsTable from '@/components/PropsTable.vue'
 
 export default defineComponent({
   name: 'Editor',
@@ -93,6 +93,7 @@ export default defineComponent({
 
     const handleChange = (e: any) => {
       console.log('e >>> ', e)
+      // store.commit('updateComponent', e)
     }
 
     return {
