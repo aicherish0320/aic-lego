@@ -30,6 +30,7 @@ import { mapPropsToForms, PropsToForms } from '../propsMap'
 import { context } from 'ant-design-vue/lib/vc-image/src/PreviewGroup'
 import { reduce } from 'lodash'
 import { computed, defineComponent, PropType, VNode } from 'vue'
+import ColorPicker from './ColorPicker.vue'
 
 interface FormProps {
   component: string
@@ -50,6 +51,9 @@ export default defineComponent({
       type: Object as PropType<TextComponentProps>,
       required: true
     }
+  },
+  components: {
+    ColorPicker
   },
   emits: ['change'],
   setup(props, context) {

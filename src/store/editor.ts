@@ -24,6 +24,7 @@ export const testComponents: ComponentData[] = [
     id: uuidv4(),
     name: 'l-text',
     props: {
+      color: '#000000',
       text: 'hello1',
       fontSize: '40px',
       lineHeight: '1',
