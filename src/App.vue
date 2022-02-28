@@ -1,4 +1,5 @@
 <template>
+  <Uploader :action="'#'" :drag="true"></Uploader>
   <a-layout :style="{ background: '#fff' }">
     <a-layout-header class="header">
       <div class="page-title">
@@ -18,17 +19,18 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
+import Uploader from './components/Uploader.vue'
 
 export default defineComponent({
   name: 'App',
   setup() {
     const store = useStore()
     const user = computed(() => store.state.user)
-
     return {
       user
     }
-  }
+  },
+  components: { Uploader }
 })
 </script>
 
