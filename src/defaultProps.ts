@@ -39,6 +39,10 @@ export interface TextComponentProps extends CommonComponentProps {
   backgroundColor: string
 }
 
+export interface ImageComponentProps extends CommonComponentProps {
+  src: string
+}
+
 export const commonDefaultProps: CommonComponentProps = {
   // actions
   actionType: '',
@@ -92,11 +96,21 @@ export const transformToComponentProps = <T extends {}>(props: T) => {
   })
 }
 
+export const imageDefaultProps: ImageComponentProps = {
+  src: 'test.url',
+  ...commonDefaultProps
+}
+
 export const textStylePropNames = without(
   Object.keys(textDefaultProps),
   'actionType',
   'url',
   'text'
+)
+
+export const imageStylePropsNames = without(
+  Object.keys(imageDefaultProps),
+  'src'
 )
 
 export const defaultTextTemplates = [

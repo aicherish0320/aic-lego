@@ -9,16 +9,24 @@
       <LText v-bind="item"></LText>
     </div>
   </div>
+  <StyledUploader @success="onImageUploaded"></StyledUploader>
 </template>
 
 <script lang="ts">
-import { TextComponentProps } from '@/defaultProps'
+import { imageDefaultProps, TextComponentProps } from '@/defaultProps'
 import { defineComponent, PropType } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import LText from './LText.vue'
+import StyledUploader from './StyledUploader.vue'
+import { UploadResp } from '../extraType'
+import { ComponentData } from '@/store/editor'
+import { message } from 'ant-design-vue'
+import { getImageDimensions } from '@/helper'
 export default defineComponent({
   name: 'ComponentList',
   components: {
-    LText
+    LText,
+    StyledUploader
   },
   props: {
     list: {
@@ -31,8 +39,28 @@ export default defineComponent({
     const onItemClick = (data: any) => {
       context.emit('on-item-click', data)
     }
+
+    const onImageUploaded = (data: { resp: UploadResp; file: File }) => {
+      const { resp, file } = data
+      const componentData: ComponentData = {
+        name: 'l-image',
+        id: uuidv4(),
+        props: {
+          ...imageDefaultProps
+        }
+      }
+      message.success('上传成功')
+      componentData.props.src = resp.data.url
+      getImageDimensions(file).then(({ width }) => {
+        const maxWidth = 373
+        componentData.props.width = (width > maxWidth ? maxWidth : width) + 'px'
+        context.emit('on-item-click', componentData)
+      })
+    }
+
     return {
-      onItemClick
+      onItemClick,
+      onImageUploaded
     }
   }
 })
