@@ -10,6 +10,12 @@ export interface ComponentData {
   id: string
   // 业务组件库名称 l-text，l-image 等等
   name: string
+  // 图层是否隐藏
+  isHidden?: boolean
+  // 图层是否锁定
+  isLocked?: boolean
+  // 图层名称
+  layerName?: string
 }
 
 export interface EditorProps {
@@ -82,12 +88,17 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     setActive(state, currentId: string) {
       state.currentElement = currentId
     },
-    updateComponent(state, { key, value }) {
+    updateComponent(state, { key, value, id, isRoot }) {
       const updatedComponent = state.components.find(
-        (component) => component.id === state.currentElement
+        (component) => component.id === (id || state.currentElement)
       )
       if (updatedComponent) {
-        updatedComponent.props[key as keyof TextComponentProps] = value
+        if (isRoot) {
+          // eslint-disable-next-line no-extra-semi
+          ;(updatedComponent as any)[key] = value
+        } else {
+          updatedComponent.props[key as keyof TextComponentProps] = value
+        }
       }
     }
   },
