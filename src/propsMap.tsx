@@ -1,5 +1,9 @@
 import { h, VNode } from 'vue'
-import { TextComponentProps } from './defaultProps'
+import {
+  ImageComponentProps,
+  TextComponentProps,
+  AllComponentProps
+} from './defaultProps'
 
 export interface PropToForm {
   component: string
@@ -14,7 +18,7 @@ export interface PropToForm {
 }
 
 export type PropsToForms = {
-  [p in keyof TextComponentProps]?: PropToForm
+  [p in keyof AllComponentProps]?: PropToForm
 }
 
 const fontFamilyArr = [
@@ -50,7 +54,8 @@ export const mapPropsToForms: PropsToForms = {
     component: 'a-textarea',
     extraProps: {
       rows: 3
-    }
+    },
+    afterTransform: (e: any) => e.target.value
   },
   fontSize: {
     text: '字号',
@@ -101,5 +106,8 @@ export const mapPropsToForms: PropsToForms = {
   color: {
     component: 'color-picker',
     text: '字体颜色'
+  },
+  src: {
+    component: 'image-processer'
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <uploader
     class="styled-uploader"
-    action="/utils/upload-img"
+    action="http://localhost:3000/api/utils/upload-img"
     :showUploadList="false"
     :beforeUpload="commonUploadCheck"
     @success="
@@ -56,6 +56,8 @@ export default defineComponent({
   emits: ['success'],
   setup(props, { emit }) {
     const handleUploadSuccess = (resp: any, file: File) => {
+      console.log(resp, file)
+
       emit('success', { resp, file })
     }
     return {

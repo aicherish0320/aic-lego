@@ -43,6 +43,8 @@ export interface ImageComponentProps extends CommonComponentProps {
   src: string
 }
 
+export type AllComponentProps = TextComponentProps & ImageComponentProps
+
 export const commonDefaultProps: CommonComponentProps = {
   // actions
   actionType: '',

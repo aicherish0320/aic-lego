@@ -31,6 +31,7 @@ import { context } from 'ant-design-vue/lib/vc-image/src/PreviewGroup'
 import { reduce } from 'lodash'
 import { computed, defineComponent, PropType, VNode } from 'vue'
 import ColorPicker from './ColorPicker.vue'
+import ImageProcesser from '../components/ImageProcesser.vue'
 
 interface FormProps {
   component: string
@@ -53,7 +54,8 @@ export default defineComponent({
     }
   },
   components: {
-    ColorPicker
+    ColorPicker,
+    ImageProcesser
   },
   emits: ['change'],
   setup(props, context) {

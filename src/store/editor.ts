@@ -48,8 +48,16 @@ export const testComponents: ComponentData[] = [
     id: uuidv4(),
     name: 'l-text',
     props: {
-      text: 'hello',
+      text: 'hello44',
       fontSize: '40px'
+    }
+  },
+  {
+    id: uuidv4(),
+    name: 'l-image',
+    props: {
+      src: 'http://aic-lego-test.oss-cn-beijing.aliyuncs.com/upload-files/kj-750681.jpeg',
+      width: '200px'
     }
   }
 ]

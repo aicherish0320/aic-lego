@@ -64,6 +64,7 @@ import { GlobalDataProps } from '@/store'
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import LText from '@/components/LText.vue'
+import LImage from '@/components/LImage.vue'
 import EditorWrapper from '@/components/EditorWrapper.vue'
 import { ComponentData } from '@/store/editor'
 import ComponentList from '@/components/ComponentList.vue'
@@ -74,6 +75,7 @@ export default defineComponent({
   name: 'Editor',
   components: {
     LText,
+    LImage,
     EditorWrapper,
     ComponentList,
     PropsTable
