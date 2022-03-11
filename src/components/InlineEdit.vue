@@ -28,8 +28,8 @@ export default defineComponent({
   },
   emits: ['change'],
   setup(props, context) {
-    // const innerValue = ref(props.value)
-    const innerValue = ref('')
+    const innerValue = ref(props.value)
+    // const innerValue = ref('')
     watch(
       () => props.value,
       (newValue) => {

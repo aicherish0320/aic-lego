@@ -36,7 +36,8 @@ export const testComponents: ComponentData[] = [
       lineHeight: '1',
       textAlign: 'center',
       fontFamily: '"SimHei","STHeiti"'
-    }
+    },
+    layerName: '1'
   },
   {
     id: uuidv4(),
@@ -48,7 +49,8 @@ export const testComponents: ComponentData[] = [
       lineHeight: '2',
       textAlign: 'right',
       fontFamily: '"KaiTi","STKaiti"'
-    }
+    },
+    layerName: '2'
   },
   {
     id: uuidv4(),
@@ -56,7 +58,8 @@ export const testComponents: ComponentData[] = [
     props: {
       text: 'hello44',
       fontSize: '40px'
-    }
+    },
+    layerName: '3'
   },
   {
     id: uuidv4(),
@@ -64,7 +67,8 @@ export const testComponents: ComponentData[] = [
     props: {
       src: 'http://aic-lego-test.oss-cn-beijing.aliyuncs.com/upload-files/kj-750681.jpeg',
       width: '200px'
-    }
+    },
+    layerName: '4'
   }
 ]
 
