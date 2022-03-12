@@ -58,11 +58,16 @@
         <a-tabs type="card" v-model:activeKey="activePanel">
           <a-tab-pane key="component" tab="属性设置" class="no-top-radius">
             <div v-if="currentElement">
-              <PropsTable
+              <!-- <PropsTable
                 v-if="!currentElement.isLocked"
                 :props="currentElement.props"
                 @change="handleChange"
-              ></PropsTable>
+              ></PropsTable> -->
+              <EditGroup
+                v-if="!currentElement.isLocked"
+                :props="currentElement.props"
+                @change="handleChange"
+              ></EditGroup>
               <div v-else>
                 <a-empty>
                   <template #description>
@@ -76,7 +81,7 @@
               :props="currentElement.props"
               @change="handleChange"
             ></PropsTable> -->
-            <pre>{{ currentElement?.props }}</pre>
+            <!-- <pre>{{ currentElement?.props }}</pre> -->
           </a-tab-pane>
           <a-tab-pane key="layer" tab="图层设置">
             <LayerList
@@ -109,6 +114,7 @@ import ComponentList from '@/components/ComponentList.vue'
 import { defaultTextTemplates } from '@/defaultProps'
 import PropsTable from '@/components/PropsTable.vue'
 import LayerList from '../components/LayerList.vue'
+import EditGroup from '@/components/EditGroup.vue'
 
 export type TabType = 'component' | 'layer' | 'page'
 
@@ -120,7 +126,8 @@ export default defineComponent({
     EditorWrapper,
     ComponentList,
     PropsTable,
-    LayerList
+    LayerList,
+    EditGroup
   },
   setup() {
     const store = useStore<GlobalDataProps>()

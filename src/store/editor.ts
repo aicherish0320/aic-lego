@@ -2,6 +2,7 @@ import { Module } from 'vuex'
 import { GlobalDataProps } from '.'
 import { v4 as uuidv4 } from 'uuid'
 import { TextComponentProps } from '@/defaultProps'
+import { textDefaultProps } from 'aic-lego-component'
 
 export interface ComponentData {
   // 这个元素的 属性，属性请详见下面
@@ -29,46 +30,50 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: 'l-text',
+    layerName: '图层1',
     props: {
+      ...textDefaultProps,
       color: '#000000',
       text: 'hello1',
       fontSize: '40px',
       lineHeight: '1',
       textAlign: 'center',
       fontFamily: '"SimHei","STHeiti"'
-    },
-    layerName: '图层1'
+    }
   },
   {
     id: uuidv4(),
     name: 'l-text',
+    layerName: '图层2',
     props: {
+      ...textDefaultProps,
       text: 'hello2',
       fontSize: '40px',
       fontWeight: 'bold',
       lineHeight: '2',
       textAlign: 'right',
       fontFamily: '"KaiTi","STKaiti"'
-    },
-    layerName: '图层2'
+    }
   },
   {
     id: uuidv4(),
     name: 'l-text',
+    layerName: '图层3',
     props: {
+      ...textDefaultProps,
       text: 'hello44',
       fontSize: '40px'
-    },
-    layerName: '图层3'
+    }
   },
   {
     id: uuidv4(),
     name: 'l-image',
+    layerName: '图层4',
     props: {
+      ...textDefaultProps,
       src: 'http://aic-lego-test.oss-cn-beijing.aliyuncs.com/upload-files/kj-750681.jpeg',
       width: '200px'
-    },
-    layerName: '图层4'
+    }
   }
 ]
 

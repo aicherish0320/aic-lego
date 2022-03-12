@@ -3,7 +3,7 @@
     <div v-for="(value, key) in finalProps" :key="key" class="prop-item">
       <template v-if="value">
         <span class="label">{{ value.text }}</span>
-        <component
+        <!-- <component
           :is="value.component"
           :[value.valueProp]="value.value"
           v-bind="value.extraProps"
@@ -17,6 +17,23 @@
               :value="option.value"
               >{{ option.text }}</component
             >
+          </template>
+        </component> -->
+        <component
+          :is="value.component"
+          :[value.valueProp]="value.value"
+          v-bind="value.extraProps"
+          v-on="value.events"
+        >
+          <template v-if="value.options">
+            <component
+              :is="value.subComponent"
+              v-for="(option, k) in value.options"
+              :key="k"
+              :value="option.value"
+            >
+              <render-vnode :vNode="option.text"></render-vnode>
+            </component>
           </template>
         </component>
       </template>
@@ -32,6 +49,7 @@ import { reduce } from 'lodash'
 import { computed, defineComponent, PropType, VNode } from 'vue'
 import ColorPicker from './ColorPicker.vue'
 import ImageProcesser from '../components/ImageProcesser.vue'
+import RenderVnode from './RenderVnode'
 
 interface FormProps {
   component: string
@@ -55,7 +73,8 @@ export default defineComponent({
   },
   components: {
     ColorPicker,
-    ImageProcesser
+    ImageProcesser,
+    RenderVnode
   },
   emits: ['change'],
   setup(props, context) {
