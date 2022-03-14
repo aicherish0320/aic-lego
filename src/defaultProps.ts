@@ -115,29 +115,29 @@ export const imageStylePropsNames = without(
   'src'
 )
 
-export const defaultTextTemplates = [
-  {
-    text: '大标题1',
-    fontSize: '30px',
-    fontWeight: 'bold',
-    tag: 'h2'
-  },
-  {
-    text: '正文内容',
-    tag: 'p'
-  },
-  {
-    text: '链接内容',
-    color: '#f00',
-    textDecoration: 'underline',
-    tag: 'p'
-  },
-  {
-    text: '按钮',
-    color: '#fff',
-    backgroundColor: '#00f',
-    tag: 'button',
-    width: '100px',
-    height: '40px'
-  }
-]
+// export const defaultTextTemplates = [
+//   {
+//     text: '大标题1',
+//     fontSize: '30px',
+//     fontWeight: 'bold',
+//     tag: 'h2'
+//   },
+//   {
+//     text: '正文内容',
+//     tag: 'p'
+//   },
+//   {
+//     text: '链接内容',
+//     color: '#f00',
+//     textDecoration: 'underline',
+//     tag: 'p'
+//   },
+//   {
+//     text: '按钮',
+//     color: '#fff',
+//     backgroundColor: '#00f',
+//     tag: 'button',
+//     width: '100px',
+//     height: '40px'
+//   }
+// ]

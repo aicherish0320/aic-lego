@@ -5,6 +5,8 @@ import { TextComponentProps } from '@/defaultProps'
 import { AllComponentProps, textDefaultProps } from 'aic-lego-component'
 import { message } from 'ant-design-vue'
 import { cloneDeep, sample } from 'lodash-es'
+import store from './index'
+export type MoveDirection = 'Up' | 'Down' | 'Left' | 'Right'
 
 export interface ComponentData {
   // 这个元素的 属性，属性请详见下面
@@ -146,6 +148,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     //   state.components.push(newComponent)
     // },
     addComponent(state, component: ComponentData) {
+      component.layerName = '图层' + (state.components.length + 1)
       state.components.push(component)
     },
     setActive(state, currentId: string) {
@@ -169,6 +172,60 @@ const editor: Module<EditorProps, GlobalDataProps> = {
           (component) => component.id !== currentComponent.id
         )
         message.success('已删除当前图层', 1)
+      }
+    },
+    moveComponent(
+      state,
+      data: { direction: MoveDirection; amount: number; id: string }
+    ) {
+      const currentComponent = state.components.find(
+        (component) => component.id === data.id
+      )
+      if (currentComponent) {
+        const oldTop = parseInt(currentComponent.props.top || '0')
+        const oldLeft = parseInt(currentComponent.props.left || '0')
+        const { direction, amount } = data
+        switch (direction) {
+          case 'Up': {
+            const newValue = oldTop - amount + 'px'
+            store.commit('updateComponent', {
+              key: 'top',
+              value: newValue,
+              id: data.id
+            })
+            break
+          }
+          case 'Down': {
+            const newValue = oldTop + amount + 'px'
+            store.commit('updateComponent', {
+              key: 'top',
+              value: newValue,
+              id: data.id
+            })
+            break
+          }
+          case 'Left': {
+            const newValue = oldLeft - amount + 'px'
+            store.commit('updateComponent', {
+              key: 'left',
+              value: newValue,
+              id: data.id
+            })
+            break
+          }
+          case 'Right': {
+            const newValue = oldLeft + amount + 'px'
+            store.commit('updateComponent', {
+              key: 'left',
+              value: newValue,
+              id: data.id
+            })
+            break
+          }
+
+          default:
+            break
+        }
       }
     },
     pasteCopiedComponent(state) {
@@ -201,6 +258,11 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     getCurrentElement: (state) => {
       return state.components.find(
         (component) => component.id === state.currentElement
+      )
+    },
+    getElement: (state) => (id: string) => {
+      return state.components.find(
+        (component) => component.id === (id || state.currentElement)
       )
     }
   }
