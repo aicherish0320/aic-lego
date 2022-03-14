@@ -4,6 +4,7 @@ import {
   TextComponentProps,
   AllComponentProps
 } from './defaultProps'
+import { AllFormProps } from './store/editor'
 
 export interface PropToForm {
   component: string
@@ -18,7 +19,7 @@ export interface PropToForm {
 }
 
 export type PropsToForms = {
-  [p in keyof AllComponentProps]?: PropToForm
+  [p in keyof AllFormProps]?: PropToForm
 }
 
 const fontFamilyArr = [
@@ -221,24 +222,23 @@ export const mapPropsToForms: PropsToForms = {
     ...defaultHandler,
     afterTransform: (e: any) => e.target.value,
     text: '链接'
+  },
+  backgroundImage: {
+    ...defaultHandler,
+    component: 'background-processer',
+    initialTransform: (v: string) => {
+      if (v) {
+        const reg = /\(["'](.+)["']\)/g
+        const matches = reg.exec(v)
+        if (matches && matches.length > 1) {
+          return matches[1]
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    },
+    afterTransform: (e: string) => (e ? `url('${e}')` : '')
   }
-  // backgroundImage: {
-  //   ...defaultHandler,
-  //   component: 'background-processer',
-  //   initialTransform: (v: string) => {
-  //     if (v) {
-  //       const reg = /\(["'](.+)["']\)/g
-  //       const matches = reg.exec(v)
-  //       if (matches && matches.length > 1) {
-  //         console.log(matches)
-  //         return matches[1]
-  //       } else {
-  //         return ''
-  //       }
-  //     } else {
-  //       return ''
-  //     }
-  //   },
-  //   afterTransform: (e: string) => (e ? `url('${e}')` : '')
-  // }
 }

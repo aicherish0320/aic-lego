@@ -3,22 +3,6 @@
     <div v-for="(value, key) in finalProps" :key="key" class="prop-item">
       <template v-if="value">
         <span class="label">{{ value.text }}</span>
-        <!-- <component
-          :is="value.component"
-          :[value.valueProp]="value.value"
-          v-bind="value.extraProps"
-          v-on="value.events"
-        >
-          <template v-if="value.options">
-            <component
-              :is="value.subComponent"
-              v-for="(option, k) in value.options"
-              :key="k"
-              :value="option.value"
-              >{{ option.text }}</component
-            >
-          </template>
-        </component> -->
         <component
           :is="value.component"
           :[value.valueProp]="value.value"
@@ -43,12 +27,14 @@
 
 <script lang="ts">
 import { TextComponentProps } from '@/defaultProps'
-import { mapPropsToForms, PropsToForms } from '../propsMap'
-import { context } from 'ant-design-vue/lib/vc-image/src/PreviewGroup'
+import { mapPropsToForms } from '../propsMap'
 import { reduce } from 'lodash'
 import { computed, defineComponent, PropType, VNode } from 'vue'
 import ColorPicker from './ColorPicker.vue'
 import ImageProcesser from '../components/ImageProcesser.vue'
+import BackgroundProcesser from '../components/BackgroundProcesser.vue'
+import ShadowPicker from '../components/ShadowPicker.vue'
+import IconSwitch from '../components/IconSwitch.vue'
 import RenderVnode from './RenderVnode'
 
 interface FormProps {
@@ -74,7 +60,10 @@ export default defineComponent({
   components: {
     ColorPicker,
     ImageProcesser,
-    RenderVnode
+    RenderVnode,
+    ShadowPicker,
+    IconSwitch,
+    BackgroundProcesser
   },
   emits: ['change'],
   setup(props, context) {
@@ -97,6 +86,7 @@ export default defineComponent({
               eventName,
               events: {
                 [eventName]: (e: any) => {
+                  console.log('e >>> ', e)
                   context.emit('change', { key, value: e })
                 }
               }

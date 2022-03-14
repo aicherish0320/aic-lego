@@ -26,19 +26,21 @@
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content class="preview-container">
           <p>画布区域</p>
-          <div>
-            <EditorWrapper
-              v-for="component in components"
-              :key="component.id"
-              :id="component.id"
-              :active="component.id === (currentElement && currentElement.id)"
-              @set-active="setActive"
-            >
-              <component
-                :is="component.name"
-                v-bind="component.props"
-              ></component>
-            </EditorWrapper>
+          <div class="preview-list" id="canvas-area">
+            <div class="body-container" :style="page.props">
+              <EditorWrapper
+                v-for="component in components"
+                :key="component.id"
+                :id="component.id"
+                :active="component.id === (currentElement && currentElement.id)"
+                @set-active="setActive"
+              >
+                <component
+                  :is="component.name"
+                  v-bind="component.props"
+                ></component>
+              </EditorWrapper>
+            </div>
           </div>
         </a-layout-content>
       </a-layout>
@@ -92,10 +94,9 @@
             >
             </LayerList>
           </a-tab-pane>
-          <!-- <a-tab-pane key="page" tab="页面设置">
+          <a-tab-pane key="page" tab="页面设置">
             <props-table :props="page.props" @change="pageChange"></props-table>
-           
-          </a-tab-pane> -->
+          </a-tab-pane>
         </a-tabs>
       </a-layout-sider>
     </a-layout>
@@ -133,6 +134,7 @@ export default defineComponent({
     const store = useStore<GlobalDataProps>()
     const components = computed(() => store.state.editor.components)
     const activePanel = ref<TabType>('component')
+    const page = computed(() => store.state.editor.page)
     const currentElement = computed<ComponentData | null>(
       () => store.getters.getCurrentElement
     )
@@ -142,9 +144,10 @@ export default defineComponent({
     const setActive = (id: string) => {
       store.commit('setActive', id)
     }
-
+    const pageChange = (e: any) => {
+      store.commit('updatePage', e)
+    }
     const handleChange = (e: any) => {
-      // console.log('e >>> ', e)
       store.commit('updateComponent', e)
     }
 
@@ -155,7 +158,9 @@ export default defineComponent({
       currentElement,
       defaultTextTemplates,
       handleChange,
-      activePanel
+      activePanel,
+      pageChange,
+      page
     }
   }
 })

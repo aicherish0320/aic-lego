@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import { GlobalDataProps } from '.'
 import { v4 as uuidv4 } from 'uuid'
 import { TextComponentProps } from '@/defaultProps'
-import { textDefaultProps } from 'aic-lego-component'
+import { AllComponentProps, textDefaultProps } from 'aic-lego-component'
 
 export interface ComponentData {
   // 这个元素的 属性，属性请详见下面
@@ -19,11 +19,28 @@ export interface ComponentData {
   layerName?: string
 }
 
+export interface PageProps {
+  backgroundColor: string
+  backgroundImage: string
+  backgroundRepeat: string
+  backgroundSize: string
+  height: string
+}
+
+export type AllFormProps = PageProps & AllComponentProps
+
+export interface PageData {
+  props: PageProps
+  title: string
+}
+
 export interface EditorProps {
   // 供中间编辑器渲染的数组
   components: ComponentData[]
   // 当前编辑的是哪个元素，uuid
   currentElement: string
+  // 当然最后保存的时候还有有一些项目信息，这里并没有写出，等做到的时候再补充
+  page: PageData
 }
 
 export const testComponents: ComponentData[] = [
@@ -77,10 +94,23 @@ export const testComponents: ComponentData[] = [
   }
 ]
 
+const pageDefaultProps = {
+  backgroundColor: '#ffffff',
+  backgroundImage:
+    'url("http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg")',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  height: '560px'
+}
+
 const editor: Module<EditorProps, GlobalDataProps> = {
   state: {
     components: testComponents,
-    currentElement: ''
+    currentElement: '',
+    page: {
+      props: pageDefaultProps,
+      title: 'test title'
+    }
   },
   mutations: {
     // addComponent(state, props: Partial<TextComponentProps>) {
@@ -109,6 +139,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
           updatedComponent.props[key as keyof TextComponentProps] = value
         }
       }
+    },
+    updatePage(state, { key, value }) {
+      state.page.props[key as keyof PageProps] = value
     }
   },
   getters: {

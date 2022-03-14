@@ -74,7 +74,6 @@ export default defineComponent({
     watch(showModal, async (newValue) => {
       if (newValue) {
         await nextTick()
-        console.log(cropperImg.value)
         if (cropperImg.value) {
           cropper = new Cropper(cropperImg.value, {
             crop(event) {

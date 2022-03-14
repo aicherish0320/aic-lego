@@ -56,8 +56,6 @@ export default defineComponent({
   emits: ['success'],
   setup(props, { emit }) {
     const handleUploadSuccess = (resp: any, file: File) => {
-      console.log(resp, file)
-
       emit('success', { resp, file })
     }
     return {
