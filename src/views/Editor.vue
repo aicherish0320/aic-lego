@@ -100,6 +100,7 @@ import { defaultTextTemplates } from '@/defaultProps'
 import PropsTable from '@/components/PropsTable.vue'
 import LayerList from '../components/LayerList.vue'
 import EditGroup from '@/components/EditGroup.vue'
+import { pickBy, forEach } from 'lodash'
 
 export type TabType = 'component' | 'layer' | 'page'
 
@@ -139,9 +140,14 @@ export default defineComponent({
       top: number
       id: string
     }) => {
-      const { left, top, id } = data
-      store.commit('updateComponent', { key: 'left', value: left + 'px', id })
-      store.commit('updateComponent', { key: 'top', value: top + 'px', id })
+      const { id } = data
+      const updatedData = pickBy<number>(data, (v, k) => k !== 'id')
+      forEach(updatedData, (v, key) => {
+        store.commit('updateComponent', { key, value: v + 'px', id })
+      })
+      // const keysArr = Object.keys(updatedData)
+      // const valuesArr = Object.values(updatedData).map((v) => v + 'px')
+      // store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
     }
 
     return {
