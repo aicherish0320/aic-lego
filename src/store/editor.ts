@@ -50,54 +50,74 @@ export const testComponents: ComponentData[] = [
     layerName: '图层1',
     props: {
       ...textDefaultProps,
+      text: 'hello',
+      fontSize: '20px',
       color: '#000000',
-      text: 'hello1',
-      fontSize: '40px',
       lineHeight: '1',
-      textAlign: 'center',
-      fontFamily: '"SimHei","STHeiti"'
-    }
-  },
-  {
-    id: uuidv4(),
-    name: 'l-text',
-    layerName: '图层2',
-    props: {
-      ...textDefaultProps,
-      text: 'hello2',
-      fontSize: '40px',
-      fontWeight: 'bold',
-      lineHeight: '2',
-      textAlign: 'right',
-      fontFamily: '"KaiTi","STKaiti"'
-    }
-  },
-  {
-    id: uuidv4(),
-    name: 'l-text',
-    layerName: '图层3',
-    props: {
-      ...textDefaultProps,
-      text: 'hello44',
-      fontSize: '40px'
-    }
-  },
-  {
-    id: uuidv4(),
-    name: 'l-image',
-    layerName: '图层4',
-    props: {
-      ...textDefaultProps,
-      src: 'http://aic-lego-test.oss-cn-beijing.aliyuncs.com/upload-files/kj-750681.jpeg',
-      width: '200px'
+      textAlign: 'left',
+      fontFamily: '',
+      width: '100px',
+      height: '100px',
+      backgroundColor: '#efefef',
+      left: '100px',
+      top: '150px'
     }
   }
+  // {
+  //   id: uuidv4(),
+  //   name: 'l-text',
+  //   layerName: '图层1',
+  //   props: {
+  //     ...textDefaultProps,
+  //     color: '#000000',
+  //     text: 'hello1',
+  //     fontSize: '40px',
+  //     lineHeight: '1',
+  //     textAlign: 'center',
+  //     fontFamily: '"SimHei","STHeiti"'
+  //   }
+  // }
+  // {
+  //   id: uuidv4(),
+  //   name: 'l-text',
+  //   layerName: '图层2',
+  //   props: {
+  //     ...textDefaultProps,
+  //     text: 'hello2',
+  //     fontSize: '40px',
+  //     fontWeight: 'bold',
+  //     lineHeight: '2',
+  //     textAlign: 'right',
+  //     fontFamily: '"KaiTi","STKaiti"'
+  //   }
+  // },
+  // {
+  //   id: uuidv4(),
+  //   name: 'l-text',
+  //   layerName: '图层3',
+  //   props: {
+  //     ...textDefaultProps,
+  //     text: 'hello44',
+  //     fontSize: '40px'
+  //   }
+  // },
+  // {
+  //   id: uuidv4(),
+  //   name: 'l-image',
+  //   layerName: '图层4',
+  //   props: {
+  //     ...textDefaultProps,
+  //     src: 'http://aic-lego-test.oss-cn-beijing.aliyuncs.com/upload-files/kj-750681.jpeg',
+  //     width: '200px'
+  //   }
+  // }
 ]
 
 const pageDefaultProps = {
   backgroundColor: '#ffffff',
-  backgroundImage:
-    'url("http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg")',
+  // backgroundImage:
+  //   'url("http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg")',
+  backgroundImage: '',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   height: '560px'

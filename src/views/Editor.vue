@@ -33,7 +33,10 @@
                 :key="component.id"
                 :id="component.id"
                 :active="component.id === (currentElement && currentElement.id)"
+                :hidden="component.isHidden"
+                :props="component.props"
                 @set-active="setActive"
+                @update-position="updatePosition"
               >
                 <component
                   :is="component.name"
@@ -49,22 +52,9 @@
         style="background: #ccc"
         class="settings-panel"
       >
-        <!-- 组件属性
-        <PropsTable
-          v-if="currentElement && currentElement.props"
-          :props="currentElement.props"
-          @change="handleChange"
-        ></PropsTable>
-        <pre>{{ currentElement?.props }}</pre> -->
-
         <a-tabs type="card" v-model:activeKey="activePanel">
           <a-tab-pane key="component" tab="属性设置" class="no-top-radius">
             <div v-if="currentElement">
-              <!-- <PropsTable
-                v-if="!currentElement.isLocked"
-                :props="currentElement.props"
-                @change="handleChange"
-              ></PropsTable> -->
               <EditGroup
                 v-if="!currentElement.isLocked"
                 :props="currentElement.props"
@@ -78,12 +68,6 @@
                 </a-empty>
               </div>
             </div>
-            <!-- <PropsTable
-              v-if="currentElement && currentElement.props"
-              :props="currentElement.props"
-              @change="handleChange"
-            ></PropsTable> -->
-            <!-- <pre>{{ currentElement?.props }}</pre> -->
           </a-tab-pane>
           <a-tab-pane key="layer" tab="图层设置">
             <LayerList
@@ -107,8 +91,8 @@
 import { GlobalDataProps } from '@/store'
 import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
-import LText from '@/components/LText.vue'
-import LImage from '@/components/LImage.vue'
+// import LText from '@/components/LText.vue'
+// import LImage from '@/components/LImage.vue'
 import EditorWrapper from '@/components/EditorWrapper.vue'
 import { ComponentData } from '@/store/editor'
 import ComponentList from '@/components/ComponentList.vue'
@@ -122,8 +106,8 @@ export type TabType = 'component' | 'layer' | 'page'
 export default defineComponent({
   name: 'Editor',
   components: {
-    LText,
-    LImage,
+    // LText,
+    // LImage,
     EditorWrapper,
     ComponentList,
     PropsTable,
@@ -150,6 +134,15 @@ export default defineComponent({
     const handleChange = (e: any) => {
       store.commit('updateComponent', e)
     }
+    const updatePosition = (data: {
+      left: number
+      top: number
+      id: string
+    }) => {
+      const { left, top, id } = data
+      store.commit('updateComponent', { key: 'left', value: left + 'px', id })
+      store.commit('updateComponent', { key: 'top', value: top + 'px', id })
+    }
 
     return {
       components,
@@ -160,13 +153,14 @@ export default defineComponent({
       handleChange,
       activePanel,
       pageChange,
-      page
+      page,
+      updatePosition
     }
   }
 })
 </script>
 
-<style scoped>
+<style>
 .editor-container .preview-container {
   padding: 24px;
   margin: 0;

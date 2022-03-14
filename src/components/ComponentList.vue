@@ -16,7 +16,7 @@
 import { imageDefaultProps, TextComponentProps } from '@/defaultProps'
 import { defineComponent, PropType } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import LText from './LText.vue'
+// import LText from './LText.vue'
 import StyledUploader from './StyledUploader.vue'
 import { UploadResp } from '../extraType'
 import { ComponentData } from '@/store/editor'
@@ -25,7 +25,7 @@ import { getImageDimensions } from '@/helper'
 export default defineComponent({
   name: 'ComponentList',
   components: {
-    LText,
+    // LText,
     StyledUploader
   },
   props: {
@@ -66,7 +66,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .component-item {
   width: 100px;
   margin: 0 auto;

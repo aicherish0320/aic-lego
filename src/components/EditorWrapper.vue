@@ -1,7 +1,10 @@
 <template>
   <div
     class="edit-wrapper"
+    ref="editWrapper"
     @click="onItemClick(id)"
+    @mousedown="startMove"
+    :style="styles"
     :class="{ active: active }"
   >
     <slot></slot>
@@ -9,7 +12,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { pick } from 'lodash'
+import { computed, defineComponent, nextTick, ref } from 'vue'
 
 export default defineComponent({
   name: 'EditorWrapper',
@@ -21,21 +25,85 @@ export default defineComponent({
     active: {
       type: Boolean,
       default: false
+    },
+    hidden: {
+      type: Boolean,
+      default: false
+    },
+    props: {
+      type: Object
     }
   },
-  emits: ['set-active'],
+  emits: ['set-active', 'update-position'],
   setup(props, context) {
+    const editWrapper = ref<null | HTMLElement>(null)
+
     const onItemClick = (id: string) => {
       context.emit('set-active', id)
     }
+    const styles = computed(() =>
+      pick(props.props, ['position', 'top', 'left', 'width', 'height'])
+    )
+    const gap = {
+      x: 0,
+      y: 0
+    }
+    let isMoving = false
+    const caculateMovePosition = (e: MouseEvent) => {
+      const container = document.getElementById('canvas-area') as HTMLElement
+      const left = e.clientX - gap.x - container.offsetLeft
+      const top = e.clientY - gap.y - container.offsetTop + container.scrollTop
+      return {
+        left,
+        top
+      }
+    }
+
+    const startMove = (e: MouseEvent) => {
+      const currentElement = editWrapper.value
+      if (currentElement) {
+        const { top, left } = currentElement.getBoundingClientRect()
+        gap.x = e.clientX - left
+        gap.y = e.clientY - top
+      }
+
+      const handleMove = (e: MouseEvent) => {
+        const { left, top } = caculateMovePosition(e)
+        isMoving = true
+        if (currentElement) {
+          currentElement.style.top = top + 'px'
+          currentElement.style.left = left + 'px'
+        }
+      }
+
+      const handleMouseUp = (e: MouseEvent) => {
+        document.removeEventListener('mousemove', handleMove)
+        if (isMoving) {
+          const { left, top } = caculateMovePosition(e)
+          context.emit('update-position', { left, top, id: props.id })
+          isMoving = false
+        }
+
+        nextTick(() => {
+          document.removeEventListener('mouseup', handleMouseUp)
+        })
+      }
+
+      document.addEventListener('mousemove', handleMove)
+      document.addEventListener('mouseup', handleMouseUp)
+    }
+
     return {
-      onItemClick
+      onItemClick,
+      styles,
+      editWrapper,
+      startMove
     }
   }
 })
 </script>
 
-<style scoped>
+<style>
 .edit-wrapper {
   padding: 0px;
   cursor: pointer;
