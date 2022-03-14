@@ -3,6 +3,8 @@ import { GlobalDataProps } from '.'
 import { v4 as uuidv4 } from 'uuid'
 import { TextComponentProps } from '@/defaultProps'
 import { AllComponentProps, textDefaultProps } from 'aic-lego-component'
+import { message } from 'ant-design-vue'
+import { cloneDeep, sample } from 'lodash-es'
 
 export interface ComponentData {
   // 这个元素的 属性，属性请详见下面
@@ -41,6 +43,8 @@ export interface EditorProps {
   currentElement: string
   // 当然最后保存的时候还有有一些项目信息，这里并没有写出，等做到的时候再补充
   page: PageData
+  // 当前被复制的组件
+  copiedComponent?: ComponentData
 }
 
 export const testComponents: ComponentData[] = [
@@ -146,6 +150,35 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
     setActive(state, currentId: string) {
       state.currentElement = currentId
+    },
+    copyComponent(state, id) {
+      const currentComponent = state.components.find(
+        (component) => component.id === (id || state.currentElement)
+      )
+      if (currentComponent) {
+        state.copiedComponent = currentComponent
+        message.success('已拷贝当前图层', 1)
+      }
+    },
+    deleteComponent(state, id) {
+      const currentComponent = state.components.find(
+        (component) => component.id === (id || state.currentElement)
+      )
+      if (currentComponent) {
+        state.components = state.components.filter(
+          (component) => component.id !== currentComponent.id
+        )
+        message.success('已删除当前图层', 1)
+      }
+    },
+    pasteCopiedComponent(state) {
+      if (state.copiedComponent) {
+        const clone = cloneDeep(state.copiedComponent)
+        clone.id = uuidv4()
+        clone.layerName = clone.layerName + '副本'
+        state.components.push(clone)
+        message.success('已黏贴当前图层', 1)
+      }
     },
     updateComponent(state, { key, value, id, isRoot }) {
       const updatedComponent = state.components.find(

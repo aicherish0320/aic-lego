@@ -91,6 +91,7 @@
 import { GlobalDataProps } from '@/store'
 import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
+import initHotKeys from '@/plugins/hotKeys'
 // import LText from '@/components/LText.vue'
 // import LImage from '@/components/LImage.vue'
 import EditorWrapper from '@/components/EditorWrapper.vue'
@@ -116,6 +117,7 @@ export default defineComponent({
     EditGroup
   },
   setup() {
+    initHotKeys()
     const store = useStore<GlobalDataProps>()
     const components = computed(() => store.state.editor.components)
     const activePanel = ref<TabType>('component')
