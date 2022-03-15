@@ -272,6 +272,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
     },
     deleteComponent(state, id) {
+      console.log('id >>> ', id)
+
       const currentComponent = state.components.find(
         (component) => component.id === (id || state.currentElement)
       )

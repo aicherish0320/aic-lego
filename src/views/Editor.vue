@@ -93,6 +93,7 @@ import { GlobalDataProps } from '@/store'
 import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import initHotKeys from '@/plugins/hotKeys'
+import initContextMenu from '@/plugins/contextMenu'
 // import LText from '@/components/LText.vue'
 // import LImage from '@/components/LImage.vue'
 import EditorWrapper from '@/components/EditorWrapper.vue'
@@ -122,6 +123,8 @@ export default defineComponent({
   },
   setup() {
     initHotKeys()
+    initContextMenu()
+
     const store = useStore<GlobalDataProps>()
     const components = computed(() => store.state.editor.components)
     console.log(components.value)
