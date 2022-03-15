@@ -26,6 +26,7 @@
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content class="preview-container">
           <p>画布区域</p>
+          <HistoryArea></HistoryArea>
           <div class="preview-list" id="canvas-area">
             <div class="body-container" :style="page.props">
               <EditorWrapper
@@ -102,7 +103,8 @@ import defaultTextTemplates from '../defaultTemplates'
 import PropsTable from '@/components/PropsTable.vue'
 import LayerList from '../components/LayerList.vue'
 import EditGroup from '@/components/EditGroup.vue'
-import { pickBy, forEach } from 'lodash'
+import { pickBy } from 'lodash'
+import HistoryArea from './editor/HistoryArea.vue'
 
 export type TabType = 'component' | 'layer' | 'page'
 
@@ -115,7 +117,8 @@ export default defineComponent({
     ComponentList,
     PropsTable,
     LayerList,
-    EditGroup
+    EditGroup,
+    HistoryArea
   },
   setup() {
     initHotKeys()
@@ -147,12 +150,12 @@ export default defineComponent({
     }) => {
       const { id } = data
       const updatedData = pickBy<number>(data, (v, k) => k !== 'id')
-      forEach(updatedData, (v, key) => {
-        store.commit('updateComponent', { key, value: v + 'px', id })
-      })
-      // const keysArr = Object.keys(updatedData)
-      // const valuesArr = Object.values(updatedData).map((v) => v + 'px')
-      // store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
+      // forEach(updatedData, (v, key) => {
+      //   store.commit('updateComponent', { key, value: v + 'px', id })
+      // })
+      const keysArr = Object.keys(updatedData)
+      const valuesArr = Object.values(updatedData).map((v) => v + 'px')
+      store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
     }
 
     return {
