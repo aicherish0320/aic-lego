@@ -67,6 +67,10 @@ export interface EditorProps {
   histories: HistoryProps[]
   // 当前历史记录的操作位置
   historyIndex: number
+  // 开始更新时的缓存值
+  cachedOldValues: any
+  // 保存最多历史条目记录数
+  maxHistoryNumber: number
 }
 
 const modifyHistory = (
@@ -92,6 +96,50 @@ const modifyHistory = (
     }
   }
 }
+
+const debounceChange = (callback: (...args: any) => void, timeout = 1000) => {
+  let timer = 0
+  return (...args: any) => {
+    console.log(timer)
+    clearTimeout(timer)
+    timer = window.setTimeout(() => {
+      timer = 0
+      callback(...args)
+    }, timeout)
+  }
+}
+const pushHistory = (state: EditorProps, historyRecord: HistoryProps) => {
+  // check historyIndex is already moved
+  if (state.historyIndex !== -1) {
+    // if moved, delete all the records greater than the index
+    state.histories = state.histories.slice(0, state.historyIndex)
+    // move historyIndex to unmoved
+    state.historyIndex = -1
+  }
+  // check length
+  if (state.histories.length < state.maxHistoryNumber) {
+    state.histories.push(historyRecord)
+  } else {
+    // larger than max number
+    // shift the first
+    // push to last
+    state.histories.shift()
+    state.histories.push(historyRecord)
+  }
+}
+const pushModifyHistory = (
+  state: EditorProps,
+  { key, value, id }: UpdateComponentData
+) => {
+  pushHistory(state, {
+    id: uuidv4(),
+    componentId: id || state.currentElement,
+    type: 'modify',
+    data: { oldValue: state.cachedOldValues, newValue: value, key }
+  })
+  state.cachedOldValues = null
+}
+const pushHistoryDebounce = debounceChange(pushModifyHistory)
 
 export const testComponents: ComponentData[] = [
   {
@@ -182,7 +230,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       title: 'test title'
     },
     histories: [],
-    historyIndex: -1
+    historyIndex: -1,
+    cachedOldValues: null,
+    maxHistoryNumber: 5
   },
   mutations: {
     // addComponent(state, props: Partial<TextComponentProps>) {
@@ -325,12 +375,18 @@ const editor: Module<EditorProps, GlobalDataProps> = {
             ? key.map((key) => updatedComponent.props[key])
             : updatedComponent.props[key]
 
-          state.histories.push({
-            id: uuidv4(),
-            componentId: id || state.currentElement,
-            type: 'modify',
-            data: { oldValue, newVal: value, key }
-          })
+          if (!state.cachedOldValues) {
+            state.cachedOldValues = oldValue
+          }
+
+          // state.histories.push({
+          //   id: uuidv4(),
+          //   componentId: id || state.currentElement,
+          //   type: 'modify',
+          //   data: { oldValue, newVal: value, key }
+          // })
+
+          pushHistoryDebounce(state, { key, value, id })
 
           if (Array.isArray(key) && Array.isArray(value)) {
             key.forEach((keyName, index) => {
