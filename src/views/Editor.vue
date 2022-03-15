@@ -121,6 +121,8 @@ export default defineComponent({
     initHotKeys()
     const store = useStore<GlobalDataProps>()
     const components = computed(() => store.state.editor.components)
+    console.log(components.value)
+
     const activePanel = ref<TabType>('component')
     const page = computed(() => store.state.editor.page)
     const currentElement = computed<ComponentData | null>(

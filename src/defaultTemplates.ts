@@ -1,4 +1,6 @@
 import { textDefaultProps } from 'aic-lego-component'
+console.log(textDefaultProps)
+
 const defaultTextTemplates = [
   {
     text: '大标题',

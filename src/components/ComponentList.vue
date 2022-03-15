@@ -36,8 +36,16 @@ export default defineComponent({
   },
   emits: ['on-item-click'],
   setup(props, context) {
-    const onItemClick = (data: any) => {
-      context.emit('on-item-click', data)
+    // const onItemClick = (data: any) => {
+    //   context.emit('on-item-click', data)
+    // }
+    const onItemClick = (props: TextComponentProps) => {
+      const componentData: ComponentData = {
+        name: 'l-text',
+        id: uuidv4(),
+        props
+      }
+      context.emit('on-item-click', componentData)
     }
 
     const onImageUploaded = (data: { resp: UploadResp; file: File }) => {

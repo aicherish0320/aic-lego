@@ -149,6 +149,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     // },
     addComponent(state, component: ComponentData) {
       component.layerName = '图层' + (state.components.length + 1)
+      console.log(component)
       state.components.push(component)
     },
     setActive(state, currentId: string) {
