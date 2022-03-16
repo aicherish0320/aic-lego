@@ -17,4 +17,10 @@ const store = createStore({
   }
 })
 
+export interface ActionPayload {
+  urlParams?: { [key: string]: any }
+  data?: any
+  searchParams?: { [key: string]: any }
+}
+
 export default store

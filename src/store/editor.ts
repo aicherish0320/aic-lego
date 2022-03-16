@@ -50,8 +50,25 @@ export interface PageProps {
 export type AllFormProps = PageProps & AllComponentProps
 
 export interface PageData {
-  props: PageProps
-  title: string
+  id?: number
+  props?: PageProps
+  title?: string
+  desc?: string
+  coverImg?: string
+  uuid?: string
+  setting?: { [key: string]: any }
+  isTemplate?: boolean
+  isHot?: boolean
+  isNew?: boolean
+  author?: string
+  copiedCount?: number
+  status?: number
+  user?: {
+    gender: string
+    nickName: string
+    picture: string
+    userName: string
+  }
 }
 
 export interface EditorProps {
@@ -401,7 +418,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
     },
     updatePage(state, { key, value }) {
-      state.page.props[key as keyof PageProps] = value
+      if (state.page.props) {
+        state.page.props[key as keyof PageProps] = value
+      }
     },
     // 撤销
     undo(state) {

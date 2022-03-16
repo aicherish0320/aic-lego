@@ -1,10 +1,10 @@
 import { PageData, PageProps, ComponentData } from './editor'
-// import { ActionPayload } from './index'
+import { ActionPayload } from './index'
 export interface RespData<T = {}> {
   errno: number
   data: T
   message?: string
-  // payload?: ActionPayload
+  payload?: ActionPayload
 }
 export interface ListData<T> {
   list: T[]
