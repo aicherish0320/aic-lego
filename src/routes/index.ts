@@ -4,24 +4,13 @@ import Home from '@/views/Home.vue'
 import Index from '@/views/Index.vue'
 import Works from '@/views/Works.vue'
 import TemplateDetail from '@/views/TemplateDetail.vue'
+import store from '@/store'
+import { message } from 'ant-design-vue'
+import axios from 'axios'
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    // {
-    //   path: '/',
-    //   component: Home
-    // },
-    // {
-    //   path: '/editor',
-    //   name: 'editor',
-    //   component: Editor
-    // },
-    // {
-    //   path: '/template/:id',
-    //   name: 'template',
-    //   component: TemplateDetail
-    // },
     {
       path: '/',
       name: 'index',
@@ -66,6 +55,41 @@ const router = createRouter({
       }
     }
   ]
+})
+
+router.beforeEach(async (to, from) => {
+  const { user } = store.state
+  const { token, isLogin } = user
+  const { redirectAlreadyLogin, requiredLogin } = to.meta
+
+  const title = to.meta.title as string
+
+  if (title) {
+    document.title = title
+  }
+  if (!isLogin) {
+    if (token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+      try {
+        await store.dispatch('fetchCurrentUser')
+        if (redirectAlreadyLogin) {
+          return '/'
+        }
+      } catch (error) {
+        message.error('登陆状态已过期 请重新登陆', 2)
+        store.commit('logout')
+        return '/login'
+      }
+    } else {
+      if (requiredLogin) {
+        return '/login'
+      }
+    }
+  } else {
+    if (redirectAlreadyLogin) {
+      return '/'
+    }
+  }
 })
 
 export default router
