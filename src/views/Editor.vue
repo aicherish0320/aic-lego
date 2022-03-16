@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import { GlobalDataProps } from '@/store'
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import initHotKeys from '@/plugins/hotKeys'
 import initContextMenu from '@/plugins/contextMenu'
@@ -106,6 +106,7 @@ import LayerList from '../components/LayerList.vue'
 import EditGroup from '@/components/EditGroup.vue'
 import { pickBy } from 'lodash'
 import HistoryArea from './editor/HistoryArea.vue'
+import { useRoute } from 'vue-router'
 
 export type TabType = 'component' | 'layer' | 'page'
 
@@ -125,6 +126,8 @@ export default defineComponent({
     initHotKeys()
     initContextMenu()
 
+    const route = useRoute()
+    const currentWorkId = route.params.id
     const store = useStore<GlobalDataProps>()
     const components = computed(() => store.state.editor.components)
     console.log(components.value)
@@ -160,6 +163,12 @@ export default defineComponent({
       const valuesArr = Object.values(updatedData).map((v) => v + 'px')
       store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
     }
+
+    onMounted(() => {
+      if (currentWorkId) {
+        store.dispatch('fetchWork', { urlParams: { id: currentWorkId } })
+      }
+    })
 
     return {
       components,

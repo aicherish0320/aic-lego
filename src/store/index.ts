@@ -1,18 +1,24 @@
-import { ActionContext, createStore } from 'vuex'
+import axios, { AxiosRequestConfig } from 'axios'
 import { compile } from 'path-to-regexp'
-import user, { UserProps } from './user'
+
+import { createStore, ActionContext } from 'vuex'
 import templates, { TemplatesProps } from './templates'
+import user, { UserProps } from './user'
 import editor, { EditorProps } from './editor'
 import global, { GlobalStatus } from './global'
-import axios, { AxiosRequestConfig } from 'axios'
 import { forEach } from 'lodash-es'
-
 export interface GlobalDataProps {
   user: UserProps
   templates: TemplatesProps
   editor: EditorProps
+  global: GlobalStatus
 }
-// 第二部，确定参数
+export interface ActionPayload {
+  urlParams?: { [key: string]: any }
+  data?: any
+  searchParams?: { [key: string]: any }
+}
+//第二步，确定参数
 export function actionWrapper(
   url: string,
   commitName: string,
@@ -46,7 +52,6 @@ export function actionWrapper(
     return resp.data
   }
 }
-
 const store = createStore({
   modules: {
     user,
@@ -55,11 +60,5 @@ const store = createStore({
     global
   }
 })
-
-export interface ActionPayload {
-  urlParams?: { [key: string]: any }
-  data?: any
-  searchParams?: { [key: string]: any }
-}
 
 export default store

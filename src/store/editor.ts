@@ -1,5 +1,5 @@
 import { Module } from 'vuex'
-import { GlobalDataProps } from '.'
+import { actionWrapper, GlobalDataProps } from '.'
 import { v4 as uuidv4 } from 'uuid'
 import { TextComponentProps } from '@/defaultProps'
 import { AllComponentProps, textDefaultProps } from 'aic-lego-component'
@@ -7,6 +7,7 @@ import { message } from 'ant-design-vue'
 import { cloneDeep, sample } from 'lodash-es'
 import store from './index'
 import { insertAt } from '@/helper'
+import { RespWorkData } from './respTypes'
 export type MoveDirection = 'Up' | 'Down' | 'Left' | 'Right'
 
 export interface HistoryProps {
@@ -422,6 +423,14 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         state.page.props[key as keyof PageProps] = value
       }
     },
+    fetchWork(state, { data }: RespWorkData) {
+      const { content, ...rest } = data
+      state.page = { ...state.page, ...rest }
+      if (content.props) {
+        state.page.props = content.props
+      }
+      state.components = content.components
+    },
     // 撤销
     undo(state) {
       // never undo before
@@ -485,6 +494,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
       state.historyIndex++
     }
+  },
+  actions: {
+    fetchWork: actionWrapper('/works/:id', 'fetchWork')
   },
   getters: {
     getCurrentElement: (state) => {
