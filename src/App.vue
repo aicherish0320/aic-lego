@@ -1,5 +1,5 @@
 <template>
-  <a-layout :style="{ background: '#fff' }">
+  <!-- <a-layout :style="{ background: '#fff' }">
     <a-layout-header class="header">
       <div class="page-title">
         <router-link to="/">慕课乐高</router-link>
@@ -12,7 +12,10 @@
     <a-layout-footer>
       © 慕课网（imooc.com）版权所有 | 津ICP备20000929号-2
     </a-layout-footer>
-  </a-layout>
+  </a-layout> -->
+  <div class="app-container">
+    <router-view />
+  </div>
 </template>
 
 <script lang="ts">

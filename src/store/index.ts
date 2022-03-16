@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import user, { UserProps } from './user'
 import templates, { TemplatesProps } from './templates'
 import editor, { EditorProps } from './editor'
+import global, { GlobalStatus } from './global'
 
 export interface GlobalDataProps {
   user: UserProps
@@ -13,7 +14,8 @@ const store = createStore({
   modules: {
     user,
     templates,
-    editor
+    editor,
+    global
   }
 })
 
