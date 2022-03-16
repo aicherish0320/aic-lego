@@ -4,7 +4,14 @@
       <TemplateList :list="testData"></TemplateList>
     </a-row>
     <a-row type="flex" justify="center">
-      <a-button type="primary" size="large">加载更多</a-button>
+      <a-button
+        type="primary"
+        size="large"
+        @click="loadMorePage"
+        v-if="!isLastPage"
+        :loading="isLoading"
+        >加载更多</a-button
+      >
     </a-row>
   </div>
 </template>
@@ -14,6 +21,7 @@ import { computed, defineComponent, onMounted } from 'vue'
 import TemplateList from '@/components/TemplateList.vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/store'
+import useLoadMore from '@/hooks/useLoadMore'
 export default defineComponent({
   name: 'Home',
   components: {
@@ -22,13 +30,24 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalDataProps>()
     const testData = computed(() => store.state.templates.data)
+    const total = computed(() => store.state.templates.totalTemplates)
+    const { loadMorePage, isLastPage } = useLoadMore('fetchTemplates', total, {
+      pageIndex: 0,
+      pageSize: 4
+    })
+    const isLoading = computed(() =>
+      store.getters.isOpLoading('fetchTemplates')
+    )
 
     onMounted(() => {
       store.dispatch('fetchTemplates')
     })
 
     return {
-      testData
+      testData,
+      isLoading,
+      loadMorePage,
+      isLastPage
     }
   }
 })
